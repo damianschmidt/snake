@@ -5,12 +5,13 @@ from random import randint
 FOOD_COLOR = (220, 0, 0)
 SNAKE_COLOR = (0, 220, 0)
 BG_COLOR = (50, 50, 50)
-RECT_DIM = 10
+RECT_DIM = 20
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 600
 SNAKE_INIT_LENGTH = 10
 SNAKE_INIT_X = (SNAKE_INIT_LENGTH + 1) * RECT_DIM
 SNAKE_INIT_Y = 300
+CLOCK_TICK = 10
 
 pygame.init()
 game_screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -47,6 +48,9 @@ class Snake(object):
         return self.body_list[-1]
 
     def game_over(self):
+        global CLOCK_TICK
+
+        CLOCK_TICK = 10
         add_text('GAME OVER', 'Arial', 72, (255, 255, 255), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2.2)
         add_text('YOUR SCORE: ' + str(self.score), 'Arial', 36, (255, 255, 255), SCREEN_WIDTH / 2, SCREEN_HEIGHT / 1.8)
 
@@ -77,33 +81,28 @@ class Snake(object):
                      y_button + (height_button / 2))
 
             pygame.display.update()
-            clock.tick(15)
+            clock.tick(CLOCK_TICK)
 
     def move_up(self):
         self.head.y -= RECT_DIM
-        if self.head.y < 0:
-            self.game_over()
 
     def move_down(self):
         self.head.y += RECT_DIM
-        if self.head.y > SCREEN_HEIGHT:
-            self.game_over()
 
     def move_left(self):
         self.head.x -= RECT_DIM
-        if self.head.x < 0:
-            self.game_over()
 
     def move_right(self):
         self.head.x += RECT_DIM
-        if self.head.x > SCREEN_WIDTH:
-            self.game_over()
 
     def eat_food(self, food):
+        global CLOCK_TICK
+
         food.reset(self)
         self.score += 1
         eat_part = self.head
         self.body_list.insert(0, eat_part)
+        CLOCK_TICK += 0.5
 
     def collision(self, food):
         # with food
@@ -114,6 +113,10 @@ class Snake(object):
         for body_part in self.body_list:
             if body_part != self.body_list[-1] and body_part.x == self.head.x and body_part.y == self.head.y:
                 self.game_over()
+
+        # with map edges
+        if not SCREEN_WIDTH > self.head.x > 0 or not SCREEN_HEIGHT > self.head.y > 0:
+            self.game_over()
 
     def update_snake(self):
         self.body_list.pop(0)
@@ -177,7 +180,7 @@ def game_loop():
         snake.collision(food)
         snake.update_snake()
         pygame.display.update()
-        clock.tick(15)
+        clock.tick(CLOCK_TICK)
 
 
 if __name__ == '__main__':
