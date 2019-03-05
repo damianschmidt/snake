@@ -121,7 +121,8 @@ def game_loop():
                 quit()
 
             if event.type == pygame.KEYDOWN:
-                snake.direct = event.key
+                if event.key in [pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT]:
+                    snake.direct = event.key
 
         game_screen.fill(BG_COLOR)
         food.render()
