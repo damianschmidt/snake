@@ -5,10 +5,10 @@ from random import randint
 FOOD_COLOR = (220, 0, 0)
 SNAKE_COLOR = (0, 220, 0)
 BG_COLOR = (50, 50, 50)
-RECT_DIM = 30
+RECT_DIM = 10
 SCREEN_WIDTH = 600
 SCREEN_HEIGHT = 600
-SNAKE_INIT_LENGTH = 5
+SNAKE_INIT_LENGTH = 10
 SNAKE_INIT_X = (SNAKE_INIT_LENGTH + 1) * RECT_DIM
 SNAKE_INIT_Y = 300
 
@@ -109,6 +109,11 @@ class Snake(object):
         # with food
         if self.head.x == food.x and self.head.y == food.y:
             self.eat_food(food)
+
+        # with itself
+        for body_part in self.body_list:
+            if body_part != self.body_list[-1] and body_part.x == self.head.x and body_part.y == self.head.y:
+                self.game_over()
 
     def update_snake(self):
         self.body_list.pop(0)
