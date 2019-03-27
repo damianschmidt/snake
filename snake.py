@@ -11,6 +11,7 @@ class Snake(object):
         self.body_list = list()
         self.score = 0
         self.direct = pygame.K_RIGHT
+        self.previous_direct = self.direct
 
         for i in range(config.SNAKE_INIT_LENGTH, 0, -1):
             self.body_list.append(Body(x - i * config.RECT_DIM, y))
@@ -27,8 +28,6 @@ class Snake(object):
         return self.body_list[-1]
 
     def game_over(self):
-        self.CLOCK_TICK = 10
-
         add_text('GAME OVER', 'Arial', 72, (255, 255, 255), config.SCREEN_WIDTH / 2, config.SCREEN_HEIGHT / 2.2)
         add_text('YOUR SCORE: ' + str(self.score), 'Arial', 36, (255, 255, 255), config.SCREEN_WIDTH / 2,
                  config.SCREEN_HEIGHT / 1.8)
@@ -50,7 +49,8 @@ class Snake(object):
             click = pygame.mouse.get_pressed()
 
             if x_button + width_button > mouse[0] > x_button and y_button + height_button > mouse[1] > y_button:
-                pygame.draw.rect(game.game_screen, button_color_hover, (x_button, y_button, width_button, height_button))
+                pygame.draw.rect(game.game_screen, button_color_hover,
+                                 (x_button, y_button, width_button, height_button))
                 if click[0] == 1:
                     game.game_loop()
             else:
@@ -79,7 +79,6 @@ class Snake(object):
         self.score += 1
         eat_part = self.head
         self.body_list.insert(0, eat_part)
-        self.CLOCK_TICK += 0.5
 
     def collision(self, food):
         # with food
@@ -92,18 +91,21 @@ class Snake(object):
                 self.game_over()
 
         # with map edges
-        if not config.SCREEN_WIDTH > self.head.x > 0 or not config.SCREEN_HEIGHT > self.head.y > 0:
+        if not config.SCREEN_WIDTH > self.head.x >= 0 or not config.SCREEN_HEIGHT > self.head.y >= 0:
             self.game_over()
 
     def update_snake(self):
         self.body_list.pop(0)
         new_part = Body(self.body_list[-1].x, self.body_list[-1].y)
         self.body_list.insert(-1, new_part)
-        self.directions[self.direct]()
+        self.change_direction()
 
-    def change_direct(self, direct):
-        if direct is not self.direct:
-            self.direct = direct
+    def change_direction(self):
+        if self.direct == pygame.K_RIGHT and self.previous_direct == pygame.K_LEFT or self.direct == pygame.K_LEFT and self.previous_direct == pygame.K_RIGHT or self.direct == pygame.K_UP and self.previous_direct == pygame.K_DOWN or self.direct == pygame.K_DOWN and self.previous_direct == pygame.K_UP:
+            self.directions[self.previous_direct]()
+        else:
+            self.directions[self.direct]()
+            self.previous_direct = self.direct
 
     def render(self):
         for body_part in self.body_list:
