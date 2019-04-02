@@ -1,7 +1,9 @@
 import pygame
 import config
+import state_table
 import snake as s
 from food import Food
+from hamiltonian import Hamiltonian
 
 pygame.init()
 game_screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
@@ -12,6 +14,12 @@ clock = pygame.time.Clock()
 def game_loop():
     snake = s.Snake(config.SNAKE_INIT_X, config.SNAKE_INIT_Y)
     food = Food()
+    tab = state_table.StateTable(snake, food)
+    tab.make_state_table()
+    tab.possibilities_of_move()
+    print(tab.state)
+    ham = Hamiltonian(tab)
+    ham.hamiltonian_cycle()
 
     while True:
         for event in pygame.event.get():
@@ -28,8 +36,9 @@ def game_loop():
         snake.render()
         snake.collision(food)
         snake.update_snake()
+        tab.make_state_table()
         pygame.display.update()
-        clock.tick(snake.CLOCK_TICK)
+        clock.tick(config.CLOCK_TICK)
 
 
 if __name__ == '__main__':

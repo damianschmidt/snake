@@ -1,13 +1,12 @@
-import config
 import pygame
-from utils import add_text
-from body import Body
+import config
 import game
+from body import Body
+from utils import add_text
 
 
 class Snake(object):
     def __init__(self, x, y):
-        self.CLOCK_TICK = 10
         self.body_list = list()
         self.score = 0
         self.direct = pygame.K_RIGHT
@@ -28,9 +27,15 @@ class Snake(object):
         return self.body_list[-1]
 
     def game_over(self):
-        add_text('GAME OVER', 'Arial', 72, (255, 255, 255), config.SCREEN_WIDTH / 2, config.SCREEN_HEIGHT / 2.2)
-        add_text('YOUR SCORE: ' + str(self.score), 'Arial', 36, (255, 255, 255), config.SCREEN_WIDTH / 2,
-                 config.SCREEN_HEIGHT / 1.8)
+        if self.score == (
+                (config.SCREEN_HEIGHT * config.SCREEN_WIDTH) // pow(config.RECT_DIM, 2)) - config.SNAKE_INIT_LENGTH:
+            add_text('YOU WIN!', 'Arial', 72, (255, 255, 255), config.SCREEN_WIDTH / 2, config.SCREEN_HEIGHT / 2.2)
+            add_text('YOUR SCORE: ' + str(self.score), 'Arial', 36, (255, 255, 255), config.SCREEN_WIDTH / 2,
+                     config.SCREEN_HEIGHT / 1.8)
+        else:
+            add_text('GAME OVER', 'Arial', 72, (255, 255, 255), config.SCREEN_WIDTH / 2, config.SCREEN_HEIGHT / 2.2)
+            add_text('YOUR SCORE: ' + str(self.score), 'Arial', 36, (255, 255, 255), config.SCREEN_WIDTH / 2,
+                     config.SCREEN_HEIGHT / 1.8)
 
         x_button = 200
         y_button = 380
@@ -60,7 +65,7 @@ class Snake(object):
                      y_button + (height_button / 2))
 
             pygame.display.update()
-            game.clock.tick(self.CLOCK_TICK)
+            game.clock.tick(config.CLOCK_TICK)
 
     def move_up(self):
         self.head.y -= config.RECT_DIM
@@ -111,3 +116,5 @@ class Snake(object):
         for body_part in self.body_list:
             body_rect = pygame.Rect(body_part.x, body_part.y, config.RECT_DIM, config.RECT_DIM)
             pygame.draw.rect(game.game_screen, config.SNAKE_COLOR, body_rect)
+
+    # temporary AI models
