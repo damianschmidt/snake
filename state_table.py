@@ -30,27 +30,27 @@ class StateTable:
         # head
         self.state[(int(self.snake_cord[-1].y) // config.RECT_DIM) + 1, (
                 int(self.snake_cord[-1].x) // config.RECT_DIM) + 1] = 4
+        print(self.state)
 
     def possibilities_of_move(self):
         id = 0
         self.vertices = ((config.SCREEN_WIDTH // config.RECT_DIM) * (config.SCREEN_HEIGHT // config.RECT_DIM)) - (
                 len(self.snake_cord) - 1)
-        # possibilities_graph = [[0 for column in range(self.vertices)] for row in range(self.vertices)]
 
         for x in range(len(self.state)):
             for y in range(len(self.state)):
-                if self.state[y, x] == 0 or self.state[y, x] == 3 or self.state[y, x] == 4:
+                if self.state[x, y] == 0 or self.state[x, y] == 3 or self.state[x, y] == 4:
                     possibilities = ''
-                    possibilities += '1' if self.state[y, x - 1] != 1 and self.state[y, x - 1] != 2 else '0'
-                    possibilities += '1' if self.state[y - 1, x] != 1 and self.state[y - 1, x] != 2 else '0'
-                    possibilities += '1' if self.state[y, x + 1] != 1 and self.state[y, x + 1] != 2 else '0'
-                    possibilities += '1' if self.state[y + 1, x] != 1 and self.state[y + 1, x] != 2 else '0'
+                    possibilities += '1' if self.state[x, y - 1] != 1 and self.state[x, y - 1] != 2 else '0'
+                    possibilities += '1' if self.state[x - 1, y] != 1 and self.state[x - 1, y] != 2 else '0'
+                    possibilities += '1' if self.state[x, y + 1] != 1 and self.state[x, y + 1] != 2 else '0'
+                    possibilities += '1' if self.state[x + 1, y] != 1 and self.state[x + 1, y] != 2 else '0'
 
                     new_node = Node(id, possibilities)
-                    if self.state[y, x] == 4:
+                    if self.state[x, y] == 4:
                         new_node.head = True
 
-                    self.node_tab[x - 1, y - 1] = new_node
+                    self.node_tab[y - 1, x - 1] = new_node
                     id += 1
 
         for x in range(len(self.node_tab)):

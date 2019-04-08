@@ -1,9 +1,13 @@
+from utils import print_solution
+
+
 class Hamiltonian:
     def __init__(self, table):
         self.tab = table
         self.start = self.tab.get_head_id()
         self.vertices = self.tab.vertices
         self.graph = table.graph
+        self.path = []
 
     def is_safe(self, v, pos, path):
         if self.graph[path[pos - 1]][v] == 0:
@@ -32,9 +36,6 @@ class Hamiltonian:
         return False
 
     def hamiltonian_cycle(self):
-        for i in range(34):
-            print(i, self.graph[i])
-
         path = [-1] * self.vertices
 
         path[0] = self.start
@@ -43,12 +44,30 @@ class Hamiltonian:
             print('Solution does not exist')
             return False
 
-        self.print_solution(path)
+        self.path = path
         return True
 
-    def print_solution(self, path):
-        print('Solution Exists: Following is one Hamiltonian Path')
-        print('Head:', self.start)
-        for vertex in path:
-            print(vertex, end=' ')
-        print()
+    def hamiltonian_move(self, snake):
+        print_solution(self.path)
+        if len(self.path) == 2:
+            if self.path[0] == self.path[1] - 1:
+                snake.move_right()
+            elif self.path[0] == self.path[1] + 1:
+                snake.move_left()
+            elif self.path[0] < self.path[1] - 1:
+                snake.move_down()
+            elif self.path[0] > self.path[1] + 1:
+                snake.move_up()
+            self.path.pop(0)
+            return False
+        else:
+            if self.path[0] == self.path[1] - 1:
+                snake.move_right()
+            elif self.path[0] == self.path[1] + 1:
+                snake.move_left()
+            elif self.path[0] < self.path[1] - 1:
+                snake.move_down()
+            elif self.path[0] > self.path[1] + 1:
+                snake.move_up()
+            self.path.pop(0)
+            return True

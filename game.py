@@ -17,7 +17,6 @@ def game_loop():
     tab = state_table.StateTable(snake, food)
     tab.make_state_table()
     tab.possibilities_of_move()
-    print(tab.state)
     ham = Hamiltonian(tab)
     ham.hamiltonian_cycle()
 
@@ -32,11 +31,16 @@ def game_loop():
                     snake.direct = event.key
 
         game_screen.fill(config.BG_COLOR)
+        tab.make_state_table()
+        tab.possibilities_of_move()
         food.render()
         snake.render()
         snake.collision(food)
         snake.update_snake()
-        tab.make_state_table()
+        if not ham.hamiltonian_move(snake):
+            ham = Hamiltonian(tab)
+            ham.hamiltonian_cycle()
+
         pygame.display.update()
         clock.tick(config.CLOCK_TICK)
 
