@@ -1,4 +1,4 @@
-class Body(object):
+class Body:
     def __init__(self, x, y):
         self.x = x
         self.y = y

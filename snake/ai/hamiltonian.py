@@ -1,4 +1,4 @@
-from utils import print_solution
+from snake.base_game.utils import print_solution
 
 
 class Hamiltonian:
