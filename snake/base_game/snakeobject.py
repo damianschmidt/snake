@@ -60,7 +60,7 @@ class SnakeObject:
         self.body_list.pop(0)
         new_part = Body(self.body_list[-1].x, self.body_list[-1].y)
         self.body_list.insert(-1, new_part)
-        self.change_direction()
+        # self.change_direction()
 
     def change_direction(self):
         if self.direct == pygame.K_RIGHT and self.previous_direct == pygame.K_LEFT or self.direct == pygame.K_LEFT and self.previous_direct == pygame.K_RIGHT or self.direct == pygame.K_UP and self.previous_direct == pygame.K_DOWN or self.direct == pygame.K_DOWN and self.previous_direct == pygame.K_UP:
@@ -71,5 +71,6 @@ class SnakeObject:
 
     def render(self, game_screen):
         for body_part in self.body_list:
-            body_rect = pygame.Rect(body_part.x, body_part.y, self.config.RECT_DIM, self.config.RECT_DIM)
+            body_rect = pygame.Rect(body_part.x + 1, body_part.y + 1, self.config.RECT_DIM - 2,
+                                    self.config.RECT_DIM - 2)
             pygame.draw.rect(game_screen, self.config.SNAKE_COLOR, body_rect)

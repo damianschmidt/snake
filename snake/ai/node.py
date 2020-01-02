@@ -7,12 +7,12 @@ class Node:
         self.right = True if str(possibilities)[2] == '1' else False
         self.down = True if str(possibilities)[3] == '1' else False
 
-    def print_info(self):
+    def __repr__(self):
         print(
-            'id:', self.id,
-            'head:', self.head,
-            'left:', self.left,
-            'up:', self.up,
-            'right:', self.right,
-            'down:', self.down,
+            '\nid:', self.id,
+            '\nhead:', self.head,
+            '\nleft:', self.left,
+            '\nup:', self.up,
+            '\nright:', self.right,
+            '\ndown:', self.down,
         )
