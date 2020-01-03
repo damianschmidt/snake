@@ -15,8 +15,7 @@ class Game:
     def __init__(self, config):
         self.config = config
         self.game_screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
-        self.max_score = ((self.config.SCREEN_HEIGHT * self.config.SCREEN_WIDTH) // pow(self.config.RECT_DIM,
-                                                                                        2)) - self.config.SNAKE_INIT_LENGTH
+        self.max_score = (self.config.SCREEN_HEIGHT * self.config.SCREEN_WIDTH) // pow(self.config.RECT_DIM, 2)
 
     def game_over(self, score):
         add_text(self.game_screen, 'GAME OVER', 'Arial', 72, (255, 255, 255), self.config.SCREEN_WIDTH / 2,
@@ -70,14 +69,18 @@ class Game:
         snake.render(self.game_screen)
         food.render(self.game_screen)
 
-    def game_loop(self):
-        snake = SnakeObject(self.config)
-        food = Food(self.config)
+    def generate_hamiltonian(self, snake):
         tab = StateTable(snake, self.config)
         tab.make_state_table()
         tab.possibilities_of_move()
         ham = Hamiltonian(tab)
         ham.hamiltonian_cycle()
+        return ham
+
+    def game_loop(self):
+        snake = SnakeObject(self.config)
+        food = Food(self.config)
+        ham = self.generate_hamiltonian(snake)
 
         while True:
             for event in pygame.event.get():
@@ -85,9 +88,9 @@ class Game:
                     pygame.quit()
                     quit()
 
-                # if event.type == pygame.KEYDOWN:
-                #     if event.key in [pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT]:
-                #         snake.direct = event.key
+                if event.type == pygame.KEYDOWN and not self.config.AI:
+                    if event.key in [pygame.K_UP, pygame.K_DOWN, pygame.K_LEFT, pygame.K_RIGHT]:
+                        snake.direct = event.key
 
             self.game_screen.fill(self.config.BG_COLOR)
             self.render(food, snake)
@@ -100,6 +103,7 @@ class Game:
                     self.game_win(snake.score)
 
             snake.update_snake()
-            ham.hamiltonian_move(snake)
+            if self.config.AI:
+                ham.hamiltonian_move(snake)
             pygame.display.update()
             clock.tick(self.config.CLOCK_TICK)

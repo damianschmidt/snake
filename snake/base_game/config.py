@@ -9,3 +9,4 @@ class Config:
     SNAKE_INIT_LENGTH = 2
     SNAKE_INIT_X = (SNAKE_INIT_LENGTH + 1) * RECT_DIM
     SNAKE_INIT_Y = SCREEN_HEIGHT / 2
+    AI = True
