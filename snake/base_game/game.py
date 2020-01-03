@@ -27,13 +27,14 @@ class Game:
         self.menu()
 
     def game_win(self, score):
-        add_text(self.game_screen, 'YOU WIN!', 'Arial', 72, (255, 255, 255), self.config.SCREEN_WIDTH / 2,
-                 self.config.SCREEN_HEIGHT / 2.2)
-        add_text(self.game_screen, 'YOUR SCORE: ' + str(score), 'Arial', 36, (255, 255, 255),
-                 self.config.SCREEN_WIDTH / 2,
-                 self.config.SCREEN_HEIGHT / 1.8)
+        if score == self.max_score:
+            add_text(self.game_screen, 'YOU WIN!', 'Arial', 72, (255, 255, 255), self.config.SCREEN_WIDTH / 2,
+                     self.config.SCREEN_HEIGHT / 2.2)
+            add_text(self.game_screen, 'YOUR SCORE: ' + str(score), 'Arial', 36, (255, 255, 255),
+                     self.config.SCREEN_WIDTH / 2,
+                     self.config.SCREEN_HEIGHT / 1.8)
 
-        self.menu()
+            self.menu()
 
     def menu(self):
         x_button = 200
@@ -97,10 +98,9 @@ class Game:
 
             if snake.collision():
                 self.game_over(snake.score)
-            else:
-                snake.eat_food(food)
-                if snake.score == self.max_score:
-                    self.game_win(snake.score)
+            elif snake.eat_food(food):
+                self.game_win(snake.score)
+                food.reset(snake)
 
             snake.update_snake()
             if self.config.AI:

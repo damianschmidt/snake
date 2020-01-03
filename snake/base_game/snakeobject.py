@@ -39,10 +39,12 @@ class SnakeObject:
 
     def eat_food(self, food):
         if self.head.x == food.x and self.head.y == food.y:
-            food.reset(self)
             self.score += 1
             eat_part = self.head
             self.body_list.insert(0, eat_part)
+            return True
+        else:
+            return False
 
     def collision(self):
         # with itself
