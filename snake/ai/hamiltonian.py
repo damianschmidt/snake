@@ -1,6 +1,3 @@
-from snake.base_game.utils import print_solution
-
-
 class Hamiltonian:
     def __init__(self, table):
         self.tab = table
@@ -9,6 +6,7 @@ class Hamiltonian:
         self.graph = table.graph
         self.path = []
         self.path_counter = 0
+        self.hamiltonian_cycle()
 
     def is_safe(self, v, pos, path):
         if self.graph[path[pos - 1]][v] == 0:
@@ -48,7 +46,7 @@ class Hamiltonian:
             return False
 
         self.path = path
-        print_solution(self.path)
+        self.print_solution()
         return True
 
     def hamiltonian_move(self, snake):
@@ -78,3 +76,9 @@ class Hamiltonian:
         elif self.path[self.path_counter] > self.path[0] + 1:
             snake.move_up()
         self.path_counter = 0
+
+    def print_solution(self):
+        print('Solution Exists: Following is one Hamiltonian Path')
+        for vertex in self.path:
+            print(vertex, end=' ')
+        print()

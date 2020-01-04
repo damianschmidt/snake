@@ -15,7 +15,8 @@ class Game:
     def __init__(self, config):
         self.config = config
         self.game_screen = pygame.display.set_mode((config.SCREEN_WIDTH, config.SCREEN_HEIGHT))
-        self.max_score = (self.config.SCREEN_HEIGHT * self.config.SCREEN_WIDTH) // pow(self.config.RECT_DIM, 2)
+        self.max_score = ((self.config.SCREEN_HEIGHT * self.config.SCREEN_WIDTH) // pow(self.config.RECT_DIM, 2)) - (
+                self.config.SNAKE_INIT_LENGTH - 1)
 
     def game_over(self, score):
         add_text(self.game_screen, 'GAME OVER', 'Arial', 72, (255, 255, 255), self.config.SCREEN_WIDTH / 2,
@@ -37,10 +38,10 @@ class Game:
             self.menu()
 
     def menu(self):
-        x_button = 200
-        y_button = 380
         width_button = 200
         height_button = 50
+        x_button = self.config.SCREEN_WIDTH / 2 - (width_button / 2)
+        y_button = 380
         button_color = (0, 0, 200)
         button_color_hover = (0, 0, 240)
         while True:
@@ -70,18 +71,18 @@ class Game:
         snake.render(self.game_screen)
         food.render(self.game_screen)
 
-    def generate_hamiltonian(self, snake):
-        tab = StateTable(snake, self.config)
-        tab.make_state_table()
-        tab.possibilities_of_move()
-        ham = Hamiltonian(tab)
-        ham.hamiltonian_cycle()
-        return ham
+    def generate_hamiltonian(self, tab):
+        if self.config.AI:
+            tab.possibilities_of_move()
+            return Hamiltonian(tab)
+        else:
+            return None
 
     def game_loop(self):
         snake = SnakeObject(self.config)
         food = Food(self.config)
-        ham = self.generate_hamiltonian(snake)
+        tab = StateTable(snake, self.config)
+        ham = self.generate_hamiltonian(tab)
 
         while True:
             for event in pygame.event.get():
@@ -100,7 +101,8 @@ class Game:
                 self.game_over(snake.score)
             elif snake.eat_food(food):
                 self.game_win(snake.score)
-                food.reset(snake)
+                tab.make_state_table()
+                food.reset(tab)
 
             snake.update_snake()
             if self.config.AI:

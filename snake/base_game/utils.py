@@ -7,10 +7,3 @@ def add_text(game_screen, text, font, size, color, width, height):
     text_rect = text_surface.get_rect()
     text_rect.center = (width, height)
     game_screen.blit(text_surface, text_rect)
-
-
-def print_solution(path):
-    print('Solution Exists: Following is one Hamiltonian Path')
-    for vertex in path:
-        print(vertex, end=' ')
-    print()
