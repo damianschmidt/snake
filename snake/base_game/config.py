@@ -1,7 +1,9 @@
 class Config:
+    SAFE_FIELD_SPACE = 5
     CLOCK_TICK = 10
     FOOD_COLOR = (220, 0, 0)
     SNAKE_COLOR = (0, 220, 0)
+    HEAD_COLOR = (90, 60, 90)
     BG_COLOR = (50, 50, 50)
     RECT_DIM = 100
     SCREEN_WIDTH = 700

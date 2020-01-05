@@ -25,6 +25,10 @@ class SnakeObject:
     def head(self):
         return self.body_list[-1]
 
+    @property
+    def tail(self):
+        return self.body_list[0]
+
     def move_up(self):
         self.head.y -= self.config.RECT_DIM
 
@@ -76,4 +80,7 @@ class SnakeObject:
         for body_part in self.body_list:
             body_rect = pygame.Rect(body_part.x + 1, body_part.y + 1, self.config.RECT_DIM - 2,
                                     self.config.RECT_DIM - 2)
-            pygame.draw.rect(game_screen, self.config.SNAKE_COLOR, body_rect)
+            if body_part == self.head:
+                pygame.draw.rect(game_screen, self.config.HEAD_COLOR, body_rect)
+            else:
+                pygame.draw.rect(game_screen, self.config.SNAKE_COLOR, body_rect)

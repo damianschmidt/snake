@@ -2,7 +2,6 @@
 Implementation of snake game in Python with Pygame.
 
 ### TODO:
-- Add shortcuts in food direction if it possible
 - Find faster way to create hamiltonian cycle
 - Add reaction when cycle doesn't exist (It is simple algorithm to check it?)
 

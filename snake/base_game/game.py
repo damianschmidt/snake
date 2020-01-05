@@ -74,7 +74,7 @@ class Game:
     def generate_hamiltonian(self, tab):
         if self.config.AI:
             tab.possibilities_of_move()
-            return Hamiltonian(tab)
+            return Hamiltonian(tab, self.config)
         else:
             return None
 
@@ -106,6 +106,6 @@ class Game:
 
             snake.update_snake()
             if self.config.AI:
-                ham.hamiltonian_move(snake)
+                ham.hamiltonian_move(snake, food)
             pygame.display.update()
             clock.tick(self.config.CLOCK_TICK)
