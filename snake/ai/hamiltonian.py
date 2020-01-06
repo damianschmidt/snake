@@ -1,4 +1,5 @@
 import operator
+import sys
 
 
 class Hamiltonian:
@@ -45,13 +46,12 @@ class Hamiltonian:
         path = [-1] * self.vertices
         path[0] = self.start
 
-        if not self.hamiltonian_utils(path, 1):
-            print('Solution does not exist')
-            return False
+        if self.vertices % 2 or not self.hamiltonian_utils(path, 1):
+            print('Solution does not exist. Try grid with even number of fields.')
+            sys.exit()
 
         self.path = path
         self.print_solution()
-        return True
 
     def hamiltonian_move(self, snake, food):
         current_position, shortcut = self.take_shortcut(food, snake)
