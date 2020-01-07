@@ -73,7 +73,6 @@ class Game:
 
     def generate_hamiltonian(self, tab):
         if self.config.AI:
-            tab.possibilities_of_move()
             return Hamiltonian(tab, self.config)
         else:
             return None

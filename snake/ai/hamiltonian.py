@@ -1,57 +1,16 @@
 import operator
-import sys
+
+from snake.ai.cycle import Cycle
 
 
 class Hamiltonian:
     def __init__(self, table, config):
         self.tab = table
-        self.start = self.tab.get_head_id()
         self.vertices = self.tab.vertices
-        self.graph = table.graph
-        self.path = []
-        self.path_counter = 0
-        self.hamiltonian_cycle()
         self.config = config
-
-    def is_safe(self, v, pos, path):
-        if self.graph[path[pos - 1]][v] == 0:
-            return False
-
-        # Check if current vertex not already in path
-        for vertex in path:
-            if vertex == v:
-                return False
-        return True
-
-    def hamiltonian_utils(self, path, pos):
-        if pos == self.vertices:
-            if self.graph[path[pos - 1]][path[0]] == 1:
-                return True
-            else:
-                return False
-
-        for v in range(0, self.vertices):
-            if self.is_safe(v, pos, path):
-                path[pos] = v
-
-                if self.hamiltonian_utils(path, pos + 1):
-                    return True
-
-                # Remove current vertex if it doesn't
-                # lead to a solution
-                path[pos] = -1
-        return False
-
-    def hamiltonian_cycle(self):
-        path = [-1] * self.vertices
-        path[0] = self.start
-
-        if self.vertices % 2 or not self.hamiltonian_utils(path, 1):
-            print('Solution does not exist. Try grid with even number of fields.')
-            sys.exit()
-
-        self.path = path
-        self.print_solution()
+        self.cycle = Cycle(config)
+        self.path = self.cycle.find_cycle()
+        self.path_counter = 0
 
     def hamiltonian_move(self, snake, food):
         current_position, shortcut = self.take_shortcut(food, snake)
@@ -68,6 +27,7 @@ class Hamiltonian:
         food_position, head_position, tail_position = self.get_food_and_snake_position(food, snake)
 
         head_index = self.path.index(head_position)
+        self.path_counter = head_index
         tail_index = self.path.index(tail_position)
         food_index = self.path.index(food_position)
 

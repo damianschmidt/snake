@@ -12,8 +12,8 @@ class StateTable:
         self.vertices = ((config.SCREEN_WIDTH // config.RECT_DIM) * (config.SCREEN_HEIGHT // config.RECT_DIM))
         self.node_tab = np.empty((config.SCREEN_WIDTH // config.RECT_DIM, config.SCREEN_HEIGHT // config.RECT_DIM),
                                  dtype=object)
-        self.graph = [[0 for column in range(self.vertices)] for row in range(self.vertices)]
         self.make_state_table()
+        self.possibilities_of_move()
 
     # empty - 0, edge - 1, head - 2, body - 3
     def make_state_table(self):
@@ -50,18 +50,6 @@ class StateTable:
 
                     self.node_tab[x - 1, y - 1] = new_node
                     node_id += 1
-
-        for x in range(self.node_tab.shape[0]):
-            for y in range(self.node_tab.shape[1]):
-                if self.node_tab[x, y] is not None:
-                    if self.node_tab[x, y].left:
-                        self.graph[self.node_tab[x, y].id][self.node_tab[x - 1, y].id] = 1
-                    if self.node_tab[x, y].right:
-                        self.graph[self.node_tab[x, y].id][self.node_tab[x + 1, y].id] = 1
-                    if self.node_tab[x, y].up:
-                        self.graph[self.node_tab[x, y].id][self.node_tab[x, y - 1].id] = 1
-                    if self.node_tab[x, y].down:
-                        self.graph[self.node_tab[x, y].id][self.node_tab[x, y + 1].id] = 1
 
     def get_head_id(self):
         for node_row in self.node_tab:

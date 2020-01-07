@@ -2,7 +2,8 @@
 Implementation of snake game in Python with Pygame.
 
 ### TODO:
-- Find faster way to create hamiltonian cycle
+- Fix bug with start collision
+- Add reaction when cycle does not exist
 
 ## Installation
 After cloning repo to install required packages type command:
