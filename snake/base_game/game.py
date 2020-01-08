@@ -41,7 +41,7 @@ class Game:
         width_button = 200
         height_button = 50
         x_button = self.config.SCREEN_WIDTH / 2 - (width_button / 2)
-        y_button = 380
+        y_button = 2 * self.config.SCREEN_HEIGHT / 3
         button_color = (0, 0, 200)
         button_color_hover = (0, 0, 240)
         while True:

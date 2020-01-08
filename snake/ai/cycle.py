@@ -1,4 +1,4 @@
-from snake.base_game.config import Config
+import sys
 
 
 class Cycle:
@@ -13,10 +13,14 @@ class Cycle:
         self.init_board()
 
     def init_board(self):
-        self.board = [[0] * self.y_size for _ in range(self.x_size)]
-        for i in range(self.x_size):
-            for j in range(self.y_size):
-                self.board[i][j] = -len(self.valid_moves(i, j))
+        if self.x_size * self.y_size % 2 == 0:
+            self.board = [[0] * self.y_size for _ in range(self.x_size)]
+            for i in range(self.x_size):
+                for j in range(self.y_size):
+                    self.board[i][j] = -len(self.valid_moves(i, j))
+        else:
+            print('Solution does not exist. Try grid with even number of fields.')
+            sys.exit()
 
     def valid_moves(self, x, y):
         moves = []

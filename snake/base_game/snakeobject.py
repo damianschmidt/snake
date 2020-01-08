@@ -8,11 +8,11 @@ class SnakeObject:
         self.config = config
         self.body_list = list()
         self.score = 0
-        self.direct = pygame.K_RIGHT
+        self.direct = pygame.K_DOWN
         self.previous_direct = self.direct
 
         for i in range(config.SNAKE_INIT_LENGTH, 0, -1):
-            self.body_list.append(Body(config.SNAKE_INIT_X - i * config.RECT_DIM, config.SNAKE_INIT_Y))
+            self.body_list.append(Body(0, config.SNAKE_INIT_Y - i * config.RECT_DIM))
 
         self.directions = {
             pygame.K_UP: self.move_up,
